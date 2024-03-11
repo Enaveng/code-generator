@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * 预期是以ACM示例模板项目为根目录，使用outputText模型参数来替换其src/com/yupi/acm/MainTemplate.java文件中的Sum:输出信息，
  * 并在同包下生成“挖好坑”的MainTemplate.java.ftl模板文件，以及在根目录下生成meta.json元信息文件。
  */
-//实现模板制作工具 即自动生成对应的ftl模板文件以及json配置文件
+//实现模板制作工具 即自动生成对应的ftl模板文件以及meta配置文件
 public class TemplateMaker {
 
     //简化参数的传递 添加一个重载的方法
@@ -175,13 +175,8 @@ public class TemplateMaker {
         // 如果是模型组
         TemplateMakerModelConfig.ModelGroupConfig modelGroupConfig = templateMakerModelConfig.getModelGroupConfig();
         if (modelGroupConfig != null) {  //表示有模型分组配置
-            String condition = modelGroupConfig.getCondition();
-            String groupKey = modelGroupConfig.getGroupKey();
-            String groupName = modelGroupConfig.getGroupName();
             Meta.ModelConfig.ModelInfo groupModelInfo = new Meta.ModelConfig.ModelInfo();
-            groupModelInfo.setGroupKey(groupKey);
-            groupModelInfo.setGroupName(groupName);
-            groupModelInfo.setCondition(condition);
+            BeanUtil.copyProperties(modelGroupConfig, groupModelInfo);
 
             // 模型全放到一个分组内
             groupModelInfo.setModels(inputModelInfoList);
@@ -194,7 +189,7 @@ public class TemplateMaker {
     }
 
     /**
-     * 得到文件信息列表
+     * 得到文件信息列表 即将配置文件信息转换为Meta对象
      *
      * @param templateMakerModelConfig
      * @param templateMakerFileConfig
@@ -226,7 +221,7 @@ public class TemplateMaker {
                     .filter(file -> !file.getAbsolutePath().endsWith(".ftl"))
                     .collect(Collectors.toList());
             for (File file : fileList) {
-                Meta.FileConfig.FileInfo fileInfo = makeFileTemplate(templateMakerModelConfig, sourceFilePath, file);
+                Meta.FileConfig.FileInfo fileInfo = makeFileTemplate(templateMakerModelConfig, sourceFilePath, file, fileInfoConfig);
                 newFileInfoList.add(fileInfo);
             }
         }
@@ -238,7 +233,7 @@ public class TemplateMaker {
             String groupName = fileGroupConfig.getGroupName();
 
             Meta.FileConfig.FileInfo fileInfo = new Meta.FileConfig.FileInfo();
-            fileInfo.setGenerateType(FileTypeEnum.GROUP.getValue());
+            fileInfo.setType(FileTypeEnum.GROUP.getValue());
             fileInfo.setCondition(condition);
             fileInfo.setGroupKey(groupKey);
             fileInfo.setGroupName(groupName);
@@ -260,7 +255,8 @@ public class TemplateMaker {
      * @param inputFile
      * @return
      */
-    private static Meta.FileConfig.FileInfo makeFileTemplate(TemplateMakerModelConfig templateMakerModelConfig, String sourceFilePath, File inputFile) {
+    private static Meta.FileConfig.FileInfo makeFileTemplate(TemplateMakerModelConfig templateMakerModelConfig, String sourceFilePath, File inputFile,
+                                                             TemplateMakerFileConfig.FileInfoConfig fileInfoConfig) {
         String fileAbsoluteInputPath = inputFile.getAbsolutePath().replaceAll("\\\\", "/");     //输出路径(绝对路径)  需要将路径当中的"\\"转换为"/"
         String fileAbsoluteOutputPath = fileAbsoluteInputPath + ".ftl"; //输入路径
 
@@ -301,6 +297,8 @@ public class TemplateMaker {
         //三.生成配置文件
         Meta.FileConfig.FileInfo fileInfo = new Meta.FileConfig.FileInfo();
         fileInfo.setInputPath(fileOutputPath);
+        //单个文件是否生成
+        fileInfo.setCondition(fileInfoConfig.getCondition());
         fileInfo.setType(FileTypeEnum.FILE.getValue());
         //默认为动态生成
         fileInfo.setOutputPath(fileInputPath);

@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.serialize.JSONSerializer;
 import com.enaveng.maker.meta.Enums.FileGenerateTypeEnum;
 import com.enaveng.maker.meta.Enums.FileTypeEnum;
 import com.enaveng.maker.meta.Enums.ModelTypeEnum;
@@ -36,8 +37,8 @@ public class MetaValidator {
         }
         for (Meta.ModelConfig.ModelInfo modelInfo : modelInfoList) {
             String groupKey = modelInfo.getGroupKey();
-            //当为mainTemplate时 不进行校验
-            if (FileTypeEnum.MAINTEMPELATE.getValue().equals(groupKey)) {
+            //当groupKey不为空时 不进行校验
+            if (StrUtil.isNotBlank(groupKey)) {
                 //生成中间参数
                 List<Meta.ModelConfig.ModelInfo> subModelInfoList = modelInfo.getModels();
                 System.out.println(subModelInfoList);
@@ -45,6 +46,7 @@ public class MetaValidator {
                         .map(subModelInfo -> String.format("\"--%s\"", subModelInfo.getFieldName()))//使用map得到每一组的ModelInfo
                         .collect(Collectors.joining(", "));
                 modelInfo.setAllArgsStr(allArgsStr);
+                continue;
             }
             // 输出路径默认值
             String fieldName = modelInfo.getFieldName();
@@ -71,7 +73,7 @@ public class MetaValidator {
         }
         // inputRootPath：.source + sourceRootPath 的最后一个层级路径
         String inputRootPath = fileConfig.getInputRootPath();
-        String defaultInputRootPath = ".source" + File.separator + FileUtil.getLastPathEle(Paths.get(sourceRootPath)).getFileName().toString();
+        String defaultInputRootPath = ".source/"  + FileUtil.getLastPathEle(Paths.get(sourceRootPath)).getFileName().toString();
         if (StrUtil.isEmpty(inputRootPath)) {
             fileConfig.setInputRootPath(defaultInputRootPath);
         }

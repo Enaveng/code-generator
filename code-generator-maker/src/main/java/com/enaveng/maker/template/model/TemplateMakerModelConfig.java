@@ -3,6 +3,9 @@ package com.enaveng.maker.template.model;
 import lombok.Data;
 import java.util.List;
 
+/**
+ * 模板制作模型配置
+ */
 @Data
 public class TemplateMakerModelConfig {
 
@@ -36,6 +39,10 @@ public class TemplateMakerModelConfig {
         private String groupKey;
 
         private String groupName;
+
+        private String type;
+
+        private String description;
 
     }
 }

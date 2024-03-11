@@ -5,10 +5,10 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class DynamicFileGenerator {
     /**
@@ -36,7 +36,7 @@ public class DynamicFileGenerator {
 
         // 创建模板对象，加载指定模板
         String path = new File(inputPath).getName();
-        Template template = configuration.getTemplate(path);
+        Template template = configuration.getTemplate(path,"utf-8");
 
         //判断outputPath文件是否存在
         if (!FileUtil.exist(outputPath)) {
@@ -44,7 +44,9 @@ public class DynamicFileGenerator {
         }
 
         // 生成对应的文件
-        Writer out = new FileWriter(outputPath);
+//        Writer out = new FileWriter(outputPath);
+//        Template template = configuration.getTemplate(templateName,"utf-8");
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(Paths.get(outputPath)), StandardCharsets.UTF_8));
         template.process(modelInfo, out);
 
         // 生成文件后关闭

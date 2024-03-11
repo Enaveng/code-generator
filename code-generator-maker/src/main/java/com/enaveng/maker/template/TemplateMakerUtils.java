@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * 模板制作工具类
+ * 模板制作工具类  用于将Meta.json的文件组配置与组外配置进行去重
  */
 public class TemplateMakerUtils {
 

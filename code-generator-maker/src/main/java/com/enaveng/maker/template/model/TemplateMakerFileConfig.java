@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * 模板制作文件配置
+ */
 @Data
 public class TemplateMakerFileConfig {
 
@@ -23,6 +26,14 @@ public class TemplateMakerFileConfig {
          */
         private String path;
 
+        /**
+         * 控制单个文件是否生成
+         */
+        private String condition;
+
+        /**
+         * 文件过滤配置
+         */
         List<FileFilterConfig> fileFilterConfigList;
 
     }
@@ -30,6 +41,9 @@ public class TemplateMakerFileConfig {
     @Data
     public static class FileGroupConfig {
 
+        /**
+         * 控制文件组是否生成
+         */
         private String condition;
 
         private String groupKey;

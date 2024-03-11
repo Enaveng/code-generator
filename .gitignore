@@ -4,11 +4,15 @@
 
 # Log file
 *.log
-aa
-bb
+
 # BlueJ files
 *.ctxt
+
+# Other Files #
 *.temp
+acm-template
+aa
+bb
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
