@@ -4,12 +4,10 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.serialize.JSONSerializer;
 import com.enaveng.maker.meta.Enums.FileGenerateTypeEnum;
 import com.enaveng.maker.meta.Enums.FileTypeEnum;
 import com.enaveng.maker.meta.Enums.ModelTypeEnum;
 
-import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
