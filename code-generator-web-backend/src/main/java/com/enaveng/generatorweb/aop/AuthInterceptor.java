@@ -1,10 +1,6 @@
 package com.enaveng.generatorweb.aop;
 
 
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import com.enaveng.generatorweb.annotation.AuthCheck;
 import com.enaveng.generatorweb.common.ErrorCode;
 import com.enaveng.generatorweb.exception.BusinessException;
@@ -20,10 +16,11 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 权限校验 AOP
- *
-  
  */
 @Aspect
 @Component

@@ -6,13 +6,12 @@ import com.enaveng.generatorweb.model.dto.user.UserQueryRequest;
 import com.enaveng.generatorweb.model.entity.User;
 import com.enaveng.generatorweb.model.vo.LoginUserVO;
 import com.enaveng.generatorweb.model.vo.UserVO;
-import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 用户服务
- *
-  
  */
 public interface UserService extends IService<User> {
 

@@ -1,35 +1,34 @@
 package com.enaveng.generatorweb.service.impl;
 
-import static com.enaveng.generatorweb.constant.UserConstant.USER_LOGIN_STATE;
-
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.enaveng.generatorweb.common.ErrorCode;
 import com.enaveng.generatorweb.constant.CommonConstant;
 import com.enaveng.generatorweb.exception.BusinessException;
-import com.enaveng.generatorweb.model.enums.UserRoleEnum;
-import com.enaveng.generatorweb.service.UserService;
-import com.enaveng.generatorweb.common.ErrorCode;
 import com.enaveng.generatorweb.mapper.UserMapper;
 import com.enaveng.generatorweb.model.dto.user.UserQueryRequest;
 import com.enaveng.generatorweb.model.entity.User;
+import com.enaveng.generatorweb.model.enums.UserRoleEnum;
 import com.enaveng.generatorweb.model.vo.LoginUserVO;
 import com.enaveng.generatorweb.model.vo.UserVO;
+import com.enaveng.generatorweb.service.UserService;
 import com.enaveng.generatorweb.utils.SqlUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.enaveng.generatorweb.constant.UserConstant.USER_LOGIN_STATE;
+
 /**
  * 用户服务实现
- *
-  
  */
 @Service
 @Slf4j
@@ -49,7 +48,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userAccount.length() < 4) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户账号过短");
         }
-        if (userPassword.length() < 8 || checkPassword.length() < 8) {
+        if (userPassword.length() < 6 || checkPassword.length() < 6) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户密码过短");
         }
         // 密码和校验密码相同
@@ -87,7 +86,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userAccount.length() < 4) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号错误");
         }
-        if (userPassword.length() < 8) {
+        if (userPassword.length() < 6) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误");
         }
         // 2. 加密

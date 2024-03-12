@@ -2,8 +2,6 @@ package com.enaveng.generatorweb.common;
 
 /**
  * 返回工具类
- *
-  
  */
 public class ResultUtils {
 

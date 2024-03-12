@@ -1,12 +1,11 @@
 package com.enaveng.generatorweb.model.dto.user;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 用户更新个人信息请求
- *
-  
  */
 @Data
 public class UserUpdateMyRequest implements Serializable {

@@ -1,16 +1,14 @@
 package com.enaveng.generatorweb.exception;
 
 import com.enaveng.generatorweb.common.BaseResponse;
-import com.enaveng.generatorweb.common.ResultUtils;
 import com.enaveng.generatorweb.common.ErrorCode;
+import com.enaveng.generatorweb.common.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 全局异常处理器
- *
-  
  */
 @RestControllerAdvice
 @Slf4j

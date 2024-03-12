@@ -1,45 +1,33 @@
 package com.enaveng.generatorweb.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.enaveng.generatorweb.common.BaseResponse;
-import com.enaveng.generatorweb.common.ResultUtils;
-import com.enaveng.generatorweb.exception.BusinessException;
-import com.enaveng.generatorweb.service.UserService;
 import com.enaveng.generatorweb.annotation.AuthCheck;
+import com.enaveng.generatorweb.common.BaseResponse;
 import com.enaveng.generatorweb.common.DeleteRequest;
 import com.enaveng.generatorweb.common.ErrorCode;
+import com.enaveng.generatorweb.common.ResultUtils;
 import com.enaveng.generatorweb.constant.UserConstant;
+import com.enaveng.generatorweb.exception.BusinessException;
 import com.enaveng.generatorweb.exception.ThrowUtils;
-import com.enaveng.generatorweb.model.dto.user.UserAddRequest;
-import com.enaveng.generatorweb.model.dto.user.UserLoginRequest;
-import com.enaveng.generatorweb.model.dto.user.UserQueryRequest;
-import com.enaveng.generatorweb.model.dto.user.UserRegisterRequest;
-import com.enaveng.generatorweb.model.dto.user.UserUpdateMyRequest;
-import com.enaveng.generatorweb.model.dto.user.UserUpdateRequest;
+import com.enaveng.generatorweb.model.dto.user.*;
 import com.enaveng.generatorweb.model.entity.User;
 import com.enaveng.generatorweb.model.vo.LoginUserVO;
 import com.enaveng.generatorweb.model.vo.UserVO;
-
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.enaveng.generatorweb.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 import static com.enaveng.generatorweb.service.impl.UserServiceImpl.SALT;
 
 /**
  * 用户接口
- *
-  
  */
 @RestController
 @RequestMapping("/user")
@@ -176,7 +164,7 @@ public class UserController {
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest,
-            HttpServletRequest request) {
+                                            HttpServletRequest request) {
         if (userUpdateRequest == null || userUpdateRequest.getId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -229,7 +217,7 @@ public class UserController {
     @PostMapping("/list/page")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<User>> listUserByPage(@RequestBody UserQueryRequest userQueryRequest,
-            HttpServletRequest request) {
+                                                   HttpServletRequest request) {
         long current = userQueryRequest.getCurrent();
         long size = userQueryRequest.getPageSize();
         Page<User> userPage = userService.page(new Page<>(current, size),
@@ -246,7 +234,7 @@ public class UserController {
      */
     @PostMapping("/list/page/vo")
     public BaseResponse<Page<UserVO>> listUserVOByPage(@RequestBody UserQueryRequest userQueryRequest,
-            HttpServletRequest request) {
+                                                       HttpServletRequest request) {
         if (userQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -273,7 +261,7 @@ public class UserController {
      */
     @PostMapping("/update/my")
     public BaseResponse<Boolean> updateMyUser(@RequestBody UserUpdateMyRequest userUpdateMyRequest,
-            HttpServletRequest request) {
+                                              HttpServletRequest request) {
         if (userUpdateMyRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

@@ -16,7 +16,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,userName,userAvatar,userProfile,
+        id
+        ,userName,userAvatar,userProfile,
         userRole,createTime,updateTime,isDelete
     </sql>
 </mapper>

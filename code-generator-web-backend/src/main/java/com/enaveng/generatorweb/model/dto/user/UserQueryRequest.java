@@ -1,14 +1,13 @@
 package com.enaveng.generatorweb.model.dto.user;
 
 import com.enaveng.generatorweb.common.PageRequest;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * 用户查询请求
- *
-  
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

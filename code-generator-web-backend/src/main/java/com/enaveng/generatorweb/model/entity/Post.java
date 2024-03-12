@@ -1,20 +1,15 @@
 package com.enaveng.generatorweb.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.util.Date;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
- * 帖子
- *
-  
+ * 代码生成器
  */
-@TableName(value = "post")
+@TableName(value = "generator")
 @Data
 public class Post implements Serializable {
 
