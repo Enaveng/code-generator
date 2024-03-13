@@ -13,6 +13,7 @@
 acm-template
 aa
 bb
+application-local.yml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

@@ -2,9 +2,9 @@
 spring:
   application:
     name: code-generator-web-backend
-  # 默认 dev 环境
+  # 默认 dev 环境 -> 修改为local环境 防止cos密钥泄漏
   profiles:
-    active: dev
+    active: local
   # 支持 swagger3
   mvc:
     pathmatch:
@@ -54,7 +54,6 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值（默认为 1）
       logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
 # 对象存储
-# todo 需替换配置
 cos:
   client:
     accessKey: xxx

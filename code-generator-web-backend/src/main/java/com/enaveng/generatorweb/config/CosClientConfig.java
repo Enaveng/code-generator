@@ -3,6 +3,7 @@ package com.enaveng.generatorweb.config;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.BasicSessionCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.region.Region;
 import lombok.Data;
@@ -13,11 +14,11 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 腾讯云对象存储客户端
  */
+@Data
 @Configuration
 @ConfigurationProperties(prefix = "cos.client")
-@Data
 public class CosClientConfig {
-
+    //配置实体类对象
     /**
      * accessKey
      */

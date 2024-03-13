@@ -1,6 +1,6 @@
 export default [
   { path: '/user', layout: false, routes: [{ path: '/user/login', component: './User/Login' }] },
-  { path: '/welcome', icon: 'smile', component: './Welcome', name: "欢迎页" },
+  { path: '/welcome', icon: 'smile', component: './Welcome', name: '欢迎页' },
   { path: '/', icon: 'home', component: './Index', name: '主页' },
   {
     path: '/admin',
@@ -17,6 +17,13 @@ export default [
         name: '代码生成器管理',
       },
     ],
+  },
+  {
+    path: '/test/file',
+    icon: 'home',
+    component: './Test/File',
+    name: '文件上传下载测试',
+    hideInMenu: true,
   },
   {
     path: '/user',
