@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -130,15 +131,35 @@ public class GeneratorServiceImpl extends ServiceImpl<GeneratorMapper, Generator
 
     @Override
     public Page<GeneratorVO> getGeneratorVOPage(Page<Generator> generatorPage, HttpServletRequest request) {
+        //需要将查询出来的generatorPage对象封装为generatorVOPage对象
         List<Generator> generatorList = generatorPage.getRecords();
         Page<GeneratorVO> generatorVOPage = new Page<>(generatorPage.getCurrent(), generatorPage.getSize(), generatorPage.getTotal());
         if (CollUtil.isEmpty(generatorList)) {
             return generatorVOPage;
         }
-        // 1. 关联查询用户信息
-        Set<Long> userIdSet = generatorList.stream().map(Generator::getUserId).collect(Collectors.toSet());
-        Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
-                .collect(Collectors.groupingBy(User::getId));
+        // 1. 得到每一个generator对象对应的userId
+        List<Long> userIdList = generatorList.stream()
+                .map(Generator::getUserId)
+                .collect(Collectors.toList());
+        // 2. 得到具体的User对象 并根据id进行分组
+        List<User> userList = userService.listByIds(userIdList);
+        Map<Long, List<User>> userMapList = userList.stream()
+                .collect(Collectors.groupingBy(User::getId)); //值为id 键为对应id的user对象
+        // 3. 进行数据的填充
+        List<GeneratorVO> generatorVOList = generatorList.stream()
+                .map(generator -> {
+                    //对每一个generator对象进行操作
+                    Long userId = generator.getUserId();
+                    //将generator对象转换为对应的vo对象
+                    GeneratorVO generatorVO = GeneratorVO.objToVo(generator);
+                    User user = null;
+                    if (userMapList.containsKey(userId)) {
+                        user = userMapList.get(userId).get(0);
+                    }
+                    generatorVO.setUser(userService.getUserVO(user));
+                    return generatorVO;
+                }).collect(Collectors.toList());
+        generatorVOPage.setRecords(generatorVOList);
         return generatorVOPage;
     }
 

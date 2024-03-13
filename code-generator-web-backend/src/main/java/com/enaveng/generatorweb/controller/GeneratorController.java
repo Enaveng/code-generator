@@ -187,6 +187,7 @@ public class GeneratorController {
         long size = generatorQueryRequest.getPageSize();
         // 限制爬虫
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        //current 当前页 前端默认传递1  size每页显示条数
         Page<Generator> generatorPage = generatorService.page(new Page<>(current, size),
                 generatorService.getQueryWrapper(generatorQueryRequest));
         return ResultUtils.success(generatorService.getGeneratorVOPage(generatorPage, request));

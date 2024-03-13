@@ -37,7 +37,7 @@ spring:
       max-file-size: 10MB
 server:
   address: 0.0.0.0
-  port: 8101
+  port: 8120
   servlet:
     context-path: /api
     # cookie 30 天过期
@@ -61,7 +61,7 @@ cos:
     secretKey: xxx
     region: xxx
     bucket: xxx
-# 接口文档配置  地址 http://localhost:8101/api/doc.html#/home
+# 接口文档配置  地址 http://localhost:8120/api/doc.html#/home
 knife4j:
   enable: true
   openapi:
