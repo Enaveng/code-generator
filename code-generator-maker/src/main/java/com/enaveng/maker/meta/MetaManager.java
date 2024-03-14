@@ -29,8 +29,8 @@ public class MetaManager {
 
     public static Meta InitMetaClass() {
         //使用hutool工具类读取元信息文件
-//        String metaStr = ResourceUtil.readUtf8Str("meta.json");
-        String metaStr = ResourceUtil.readUtf8Str("springboot-init.json");
+        String metaStr = ResourceUtil.readUtf8Str("meta.json");
+//        String metaStr = ResourceUtil.readUtf8Str("springboot-init.json");
         Meta metaData = JSONUtil.toBean(metaStr, Meta.class);
         //对元信息文件进行校验
         MetaValidator.doValidAndFill(metaData);

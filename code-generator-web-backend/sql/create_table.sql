@@ -1,5 +1,4 @@
-#
-数据库初始化
+#数据库初始化
 -- 创建库
 create
 database if not exists code_generator_db;
@@ -133,3 +132,34 @@ INSERT INTO code_generator_db.generator(id, name, description, basePackage, vers
                                         modelConfig, distPath, status, userId)
 VALUES (5, '鱼皮API开放平台', '鱼皮API开放平台项目生成器', 'com.dexcode', '1.0', '管理员豹警官', '["Java", "前端"]',
         'https://pic.yupi.icu/1/_r1_c0709-8e80689ac1da.jpg', '{}', '{}', null, 0, 1);
+
+INSERT INTO code_generator_db.generator (id, name, description, basePackage, version, author, tags, picture, fileConfig, modelConfig, distPath, status, userId, createTime, updateTime, isDelete) VALUES (18, 'acm-template-pro-generator', 'ACM 示例模板生成器', 'com.yupi', '1.0', 'yupi', '["Java"]', 'https://yuzi-1256524210.cos.ap-shanghai.myqcloud.com/generator_picture/1738875515482562562/U7uDBXC3-test (1).jpg', '{
+    "files": [
+      {
+        "groupKey": "git",
+        "groupName": "开源",
+        "type": "group",
+        "condition": "needGit",
+        "files": [
+          {
+            "inputPath": ".gitignore",
+            "outputPath": ".gitignore",
+            "type": "file",
+            "generateType": "static"
+          },
+          {
+            "inputPath": "README.md",
+            "outputPath": "README.md",
+            "type": "file",
+            "generateType": "static"
+          }
+        ]
+      },
+      {
+        "inputPath": "src/com/yupi/acm/MainTemplate.java.ftl",
+        "outputPath": "src/com/yupi/acm/MainTemplate.java",
+        "type": "file",
+        "generateType": "dynamic"
+      }
+    ]
+  }', '{"models":[{"fieldName":"needGit","type":"boolean","description":"是否生成 .gitignore 文件","defaultValue":true},{"fieldName":"loop","type":"boolean","description":"是否生成循环","defaultValue":false,"abbr":"l"},{"type":"MainTemplate","description":"用于生成核心模板文件","groupKey":"mainTemplate","groupName":"核心模板","models":[{"fieldName":"author","type":"String","description":"作者注释","defaultValue":"yupi","abbr":"a"},{"fieldName":"outputText","type":"String","description":"输出信息","defaultValue":"sum = ","abbr":"o"}],"condition":"loop"}]}', '/generator_dist/1738875515482562562/kLbG2yGh-acm-template-pro-generator.zip', 0, 1738875515482562562, '2024-01-06 23:00:17', '2024-01-08 18:50:12', 0);

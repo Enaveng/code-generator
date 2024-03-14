@@ -1,5 +1,6 @@
 package com.enaveng.maker;
 
+import com.enaveng.maker.cli.CommandExecutor;
 import com.enaveng.maker.generator.main.GeneratorTemplate;
 import com.enaveng.maker.generator.main.MainGenerator;
 import com.enaveng.maker.generator.main.ZipGenerator;
@@ -15,6 +16,7 @@ public class Main {
 //        CommandExecutor commandExecutor = new CommandExecutor();
 //        commandExecutor.doExecute(args);
 //        MainGenerator mainGenerator = new MainGenerator();
+//        mainGenerator.doGenerator();
         GeneratorTemplate generatorTemplate = new ZipGenerator();
         generatorTemplate.doGenerator();
 

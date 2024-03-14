@@ -3,6 +3,7 @@ package com.enaveng.maker.cli;
 
 import com.enaveng.maker.cli.Command.ConfigCommand;
 import com.enaveng.maker.cli.Command.GenerateCommand;
+import com.enaveng.maker.cli.Command.JSONGenerateCommand;
 import com.enaveng.maker.cli.Command.ListCommand;
 import picocli.CommandLine;
 
@@ -18,7 +19,8 @@ public class CommandExecutor implements Runnable {
         commandLine = new CommandLine(this)
                 .addSubcommand(new GenerateCommand())
                 .addSubcommand(new ConfigCommand())
-                .addSubcommand(new ListCommand());
+                .addSubcommand(new ListCommand())
+                .addSubcommand(new JSONGenerateCommand());
     }
 
     @Override

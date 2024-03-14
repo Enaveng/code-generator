@@ -8,7 +8,7 @@ import java.util.List;
 
 //查看要生成的文件原始列表信息
 @CommandLine.Command(name = "list", description = "查看文件列表", mixinStandardHelpOptions = true)
-public class ListCommand implements Runnable{
+public class ListCommand implements Runnable {
     @Override
     public void run() {
         String property = System.getProperty("user.dir");

@@ -3,6 +3,7 @@ package ${basePackage}.cli;
 import ${basePackage}.cli.command.GenerateCommand;
 import ${basePackage}.cli.command.ListCommand;
 import ${basePackage}.cli.command.ConfigCommand;
+import ${basePackage}.cli.command.JSONGenerateCommand;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
@@ -14,13 +15,13 @@ public class CommandExecutor implements Runnable {
 
     private final CommandLine commandLine;
 
-        {
-        commandLine = new CommandLine(this)
-        .addSubcommand(new GenerateCommand())
-        .addSubcommand(new ConfigCommand())
-        .addSubcommand(new ListCommand());
-        }
-
+         {
+              commandLine = new CommandLine(this)
+                      .addSubcommand(new GenerateCommand())
+                      .addSubcommand(new ConfigCommand())
+                      .addSubcommand(new ListCommand())
+                      .addSubcommand(new JSONGenerateCommand());
+          }
         @Override
         public void run() {
             // 不输入子命令时，给出友好提示

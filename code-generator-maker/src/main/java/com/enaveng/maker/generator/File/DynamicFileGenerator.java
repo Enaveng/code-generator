@@ -36,7 +36,7 @@ public class DynamicFileGenerator {
 
         // 创建模板对象，加载指定模板
         String path = new File(inputPath).getName();
-        Template template = configuration.getTemplate(path,"utf-8");
+        Template template = configuration.getTemplate(path, "utf-8");
 
         //判断outputPath文件是否存在
         if (!FileUtil.exist(outputPath)) {
