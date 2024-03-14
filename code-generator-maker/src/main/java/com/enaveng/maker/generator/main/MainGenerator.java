@@ -12,7 +12,8 @@ public class MainGenerator extends GeneratorTemplate {
     }
 
     @Override
-    public void generatorDistFile(String outputPath, String copyRootPath, String shellOutputFilePath, String jarPath) {
+    public String generatorDistFile(String outputPath, String copyRootPath, String shellOutputFilePath, String jarPath) {
         System.out.println("不生成dist文件");
+        return "";
     }
 }

@@ -1,6 +1,8 @@
 package com.enaveng.maker;
 
+import com.enaveng.maker.generator.main.GeneratorTemplate;
 import com.enaveng.maker.generator.main.MainGenerator;
+import com.enaveng.maker.generator.main.ZipGenerator;
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
@@ -12,7 +14,9 @@ public class Main {
 //        args = new String[]{"config"};
 //        CommandExecutor commandExecutor = new CommandExecutor();
 //        commandExecutor.doExecute(args);
-        MainGenerator mainGenerator = new MainGenerator();
-        mainGenerator.doGenerator();
+//        MainGenerator mainGenerator = new MainGenerator();
+        GeneratorTemplate generatorTemplate = new ZipGenerator();
+        generatorTemplate.doGenerator();
+
     }
 }

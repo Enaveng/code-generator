@@ -3,6 +3,7 @@ package com.enaveng.maker.generator.main;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.ZipUtil;
 import com.enaveng.maker.generator.File.DynamicFileGenerator;
 import com.enaveng.maker.generator.JarGenerator;
 import com.enaveng.maker.generator.ScriptGenerator;
@@ -54,7 +55,7 @@ public class GeneratorTemplate {
      * @param shellOutputFilePath 脚本文件目录
      * @param jarPath             jar包文件目录
      */
-    public void generatorDistFile(String outputPath, String copyRootPath, String shellOutputFilePath, String jarPath) {
+    public String generatorDistFile(String outputPath, String copyRootPath, String shellOutputFilePath, String jarPath) {
         //优化代码空间 同时生成精简版代码文件
         //首先创建精简版代码文件目录
         String distOutputPath = outputPath + "-dist";
@@ -72,6 +73,19 @@ public class GeneratorTemplate {
         FileUtil.copy(shellOutputFilePath + ".bat", distOutputPath, false);
         //拷贝源代码文件
         FileUtil.copy(copyRootPath, distOutputPath, false);
+        return distOutputPath;
+    }
+
+    /**
+     * 生成对应的产物包zip压缩文件
+     *
+     * @param srcPath 源文件路径
+     * @return 压缩完成文件路径
+     */
+    public String buildZip(String srcPath) {
+        String zipPath = srcPath + ".zip";
+        ZipUtil.zip(srcPath, zipPath);
+        return zipPath;
     }
 
     public void generatorCode(Meta meta, String outputPath, String inputResourcePath) throws IOException, TemplateException {

@@ -1,5 +1,6 @@
 package com.enaveng.generatorweb.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.enaveng.generatorweb.annotation.AuthCheck;
@@ -10,6 +11,7 @@ import com.enaveng.generatorweb.common.ResultUtils;
 import com.enaveng.generatorweb.constant.UserConstant;
 import com.enaveng.generatorweb.exception.BusinessException;
 import com.enaveng.generatorweb.exception.ThrowUtils;
+import com.enaveng.generatorweb.manager.CosManager;
 import com.enaveng.generatorweb.meta.Meta;
 import com.enaveng.generatorweb.model.dto.generator.GeneratorAddRequest;
 import com.enaveng.generatorweb.model.dto.generator.GeneratorEditRequest;
@@ -20,12 +22,18 @@ import com.enaveng.generatorweb.model.entity.User;
 import com.enaveng.generatorweb.model.vo.GeneratorVO;
 import com.enaveng.generatorweb.service.GeneratorService;
 import com.enaveng.generatorweb.service.UserService;
+import com.qcloud.cos.model.COSObject;
+import com.qcloud.cos.model.COSObjectInputStream;
+import com.qcloud.cos.utils.IOUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.record.DVALRecord;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,6 +50,8 @@ public class GeneratorController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private CosManager cosManager;
 
     /**
      * 创建代码生成器
@@ -260,5 +270,55 @@ public class GeneratorController {
         boolean result = generatorService.updateById(generator);
         return ResultUtils.success(result);
     }
+
+    /**
+     * 根据生成器id进行下载
+     *
+     * @param id
+     * @param request
+     */
+    @GetMapping("/download")
+    public void downloadGeneratorById(@RequestParam long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (id < 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        //根据生成器id得到对应用户id
+        Generator generator = generatorService.getById(id);
+        if (generator == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        //得到对应的登录用户
+        User loginUser = userService.getLoginUser(request);
+
+        log.info("登录用户 " + loginUser + " 下载了id为 " + id + " 的生成器");
+        String filepath = generator.getDistPath();
+        if (StrUtil.isBlank(filepath)) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "对应的产物包不存在");
+        }
+        COSObjectInputStream cosObjectInput = null;
+        try {
+            COSObject cosObject = cosManager.getObject(filepath); //下载文件得到cosObject对象
+            cosObjectInput = cosObject.getObjectContent();
+            // 处理下载到的流
+            byte[] bytes = IOUtils.toByteArray(cosObjectInput);
+            // 设置响应头
+            response.setContentType("application/octet-stream;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment; filename=" + filepath);
+            // 写入响应
+            response.getOutputStream().write(bytes);
+            response.getOutputStream().flush();
+        } catch (Exception e) {
+            log.error("file download error, filepath = " + filepath, e);
+            log.error("file download error, filepath = ");
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "下载失败");
+        } finally {
+            if (cosObjectInput != null) {
+                cosObjectInput.close(); //关闭流对象
+            }
+        }
+
+
+    }
+
 
 }

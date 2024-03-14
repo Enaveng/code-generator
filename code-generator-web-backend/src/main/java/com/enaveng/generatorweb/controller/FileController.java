@@ -99,6 +99,7 @@ public class FileController {
             response.getOutputStream().flush();
         } catch (Exception e) {
             log.error("file download error, filepath = " + filepath, e);
+            log.error("file download error, filepath = ");
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "下载失败");
         } finally {
             if (cosObjectInput != null) {
@@ -124,12 +125,12 @@ public class FileController {
         if (fileUploadBizEnum == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        validFile(multipartFile, fileUploadBizEnum);
+        validFile(multipartFile, fileUploadBizEnum);  //进行文件的校验
         User loginUser = userService.getLoginUser(request);
         // 文件目录：根据业务、用户来划分
         String uuid = RandomStringUtils.randomAlphanumeric(8);
         String filename = uuid + "-" + multipartFile.getOriginalFilename();
-        String filepath = String.format("/%s/%s/%s", fileUploadBizEnum.getValue(), loginUser.getId(), filename);
+        String filepath = String.format("/%s/%s/%s", fileUploadBizEnum.getValue(), loginUser.getId(), filename); //上传路径
         File file = null;
         try {
             // 上传文件
@@ -137,7 +138,7 @@ public class FileController {
             multipartFile.transferTo(file);
             cosManager.putObject(filepath, file);
             // 返回可访问地址
-            return ResultUtils.success(FileConstant.COS_HOST + filepath);
+            return ResultUtils.success(filepath);
         } catch (Exception e) {
             log.error("file upload error, filepath = " + filepath, e);
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传失败");
@@ -153,7 +154,7 @@ public class FileController {
     }
 
     /**
-     * 校验文件
+     * 校验文件类型以及大小
      *
      * @param multipartFile
      * @param fileUploadBizEnum 业务类型
