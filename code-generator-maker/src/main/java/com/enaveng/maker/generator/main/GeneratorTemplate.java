@@ -16,6 +16,7 @@ import java.io.IOException;
 
 //模板方法实现生成文件代码
 public class GeneratorTemplate {
+
     public void doGenerator() throws TemplateException, IOException, InterruptedException {
         Meta meta = MetaManager.getMetaObject();
         System.out.println(meta);
@@ -25,6 +26,37 @@ public class GeneratorTemplate {
 //        System.out.println(projectPath);
         //复制文件的输出目录
         String outputPath = projectPath + File.separator + "generated" + File.separator + meta.getName();
+        if (!FileUtil.exist(outputPath)) {  //目录不存在则创建
+            FileUtil.mkdir(outputPath);
+        }
+        ClassPathResource classPathResource = new ClassPathResource("");
+        String inputResourcePath = classPathResource.getAbsolutePath();
+
+        //将原始代码文件复制到生成的代码文件包中
+        String copyRootPath = copyResourceFile(meta, outputPath);
+
+        //生成文件
+        generatorCode(meta, outputPath, inputResourcePath);
+
+        // 构建 jar 包
+        String jarPath = buildJar(outputPath, meta);
+
+        // 封装脚本
+        String shellOutputFilePath = buildScript(outputPath, jarPath);
+
+        //生成精简版代码文件
+        generatorDistFile(outputPath, copyRootPath, shellOutputFilePath, jarPath);
+    }
+
+    /**
+     * 提供一个重载方法 让云平台可以调用从而完成在线制作生成器
+     *
+     * @throws TemplateException
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void doGenerator(Meta meta, String outputPath) throws TemplateException, IOException, InterruptedException {
+
         if (!FileUtil.exist(outputPath)) {  //目录不存在则创建
             FileUtil.mkdir(outputPath);
         }
@@ -101,7 +133,7 @@ public class GeneratorTemplate {
 
         //输入路径
         // model.DataModel
-        inputFilePath = inputResourcePath + File.separator + "templates/java/model/DataModel.java.ftl";
+        inputFilePath = inputResourcePath + "templates/java/model/DataModel.java.ftl";
         outputFilePath = outputBaseJavaPackagePath + "/model/DataModel.java";
         DynamicFileGenerator.doGenerate(inputFilePath, outputFilePath, meta);
 

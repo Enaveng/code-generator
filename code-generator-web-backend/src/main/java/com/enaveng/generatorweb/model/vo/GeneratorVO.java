@@ -1,7 +1,7 @@
 package com.enaveng.generatorweb.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import com.enaveng.generatorweb.meta.Meta;
+import com.enaveng.maker.meta.Meta;
 import com.enaveng.generatorweb.model.entity.Generator;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

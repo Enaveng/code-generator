@@ -112,6 +112,7 @@ public class TemplateMaker {
                 }
             }
 
+
             //更新元信息文件
             FileUtil.writeUtf8String(JSONUtil.toJsonPrettyStr(oldMeta), metaJsonPath);
         } else {

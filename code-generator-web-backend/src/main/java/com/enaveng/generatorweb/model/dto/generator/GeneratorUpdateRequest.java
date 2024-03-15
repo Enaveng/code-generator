@@ -1,6 +1,6 @@
 package com.enaveng.generatorweb.model.dto.generator;
 
-import com.enaveng.generatorweb.meta.Meta;
+import com.enaveng.maker.meta.Meta;
 import lombok.Data;
 
 import java.io.Serializable;

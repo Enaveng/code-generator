@@ -160,6 +160,11 @@ declare namespace API {
     version?: string;
   };
 
+  type GeneratorRequest = {
+    dataModel?: Record<string, any>;
+    id?: number;
+  };
+
   type GeneratorUpdateRequest = {
     author?: string;
     basePackage?: string;
