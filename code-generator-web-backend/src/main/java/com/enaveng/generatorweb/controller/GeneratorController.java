@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
@@ -123,6 +124,7 @@ public class GeneratorController {
         boolean b = generatorService.removeById(id);
         return ResultUtils.success(b);
     }
+
 
     /**
      * 更新（仅管理员）
@@ -433,7 +435,7 @@ public class GeneratorController {
 
 
     /**
-     * 在线制作生成器接口
+     * 在线制作生成器接口 根据用户上传的模板文件制作生成器
      *
      * @param generatorMakeRequest
      * @param request
@@ -441,7 +443,7 @@ public class GeneratorController {
      * @throws Exception
      */
     @PostMapping("/make")
-    public void makerGenerator(@RequestBody GeneratorMakeRequest generatorMakeRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void makeGenerator(@RequestBody GeneratorMakeRequest generatorMakeRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
         //1. 获取请求参数
         String zipFilePath = generatorMakeRequest.getZipFilePath();
         Meta meta = generatorMakeRequest.getMeta();
@@ -469,7 +471,7 @@ public class GeneratorController {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "模板文件下载失败");
         }
         //3. 将压缩文件进行解压
-        File unzipDistDir = ZipUtil.unzip(localZipFilePath);
+        File unzipDistDir = ZipUtil.unzip(localZipFilePath);  //将压缩文件解压到文件名相同的目录中
         //4. 构造Meta对象以及生成项目的输出路径
         String sourceRootPath = unzipDistDir.getAbsolutePath();
         meta.getFileConfig().setSourceRootPath(sourceRootPath);
@@ -501,7 +503,7 @@ public class GeneratorController {
             FileUtil.del(tempDirPath);
         });
 
-        //测试文件参数 /generator_dist/1767434287893708802/soDTzyOE-acm-template-pro.zip
+        //测试文件参数  /generator_dist/1767434287893708802/MF8INGu0-acm-template-pro.zip
 
 
     }

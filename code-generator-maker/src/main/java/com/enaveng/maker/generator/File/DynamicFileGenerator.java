@@ -28,7 +28,7 @@ public class DynamicFileGenerator {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_32);
 
         int lastSplitIndex = relativeInputPath.lastIndexOf("/");
-        String basePackagePath = relativeInputPath.substring(0, lastSplitIndex) + "/";
+        String basePackagePath = relativeInputPath.substring(0, lastSplitIndex);
         String templateName = relativeInputPath.substring(lastSplitIndex + 1);
 
         // 指定模板文件所在的路径

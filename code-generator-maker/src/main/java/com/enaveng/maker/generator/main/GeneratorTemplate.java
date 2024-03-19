@@ -26,26 +26,8 @@ public class GeneratorTemplate {
 //        System.out.println(projectPath);
         //复制文件的输出目录
         String outputPath = projectPath + File.separator + "generated" + File.separator + meta.getName();
-        if (!FileUtil.exist(outputPath)) {  //目录不存在则创建
-            FileUtil.mkdir(outputPath);
-        }
-        ClassPathResource classPathResource = new ClassPathResource("");
-        String inputResourcePath = classPathResource.getAbsolutePath();
 
-        //将原始代码文件复制到生成的代码文件包中
-        String copyRootPath = copyResourceFile(meta, outputPath);
-
-        //生成文件
-        generatorCode(meta, outputPath, inputResourcePath);
-
-        // 构建 jar 包
-        String jarPath = buildJar(outputPath, meta);
-
-        // 封装脚本
-        String shellOutputFilePath = buildScript(outputPath, jarPath);
-
-        //生成精简版代码文件
-        generatorDistFile(outputPath, copyRootPath, shellOutputFilePath, jarPath);
+        doGenerator(meta, outputPath);
     }
 
     /**
@@ -61,7 +43,11 @@ public class GeneratorTemplate {
             FileUtil.mkdir(outputPath);
         }
         ClassPathResource classPathResource = new ClassPathResource("");
-        String inputResourcePath = classPathResource.getAbsolutePath();
+//        String inputResourcePath = classPathResource.getAbsolutePath();
+        /**
+         * 注:在通过使用类加载器 根据资源的相对路径来获取模板文件时 inputResourcePath需要为 ""
+         */
+        String inputResourcePath = "";
 
         //将原始代码文件复制到生成的代码文件包中
         String copyRootPath = copyResourceFile(meta, outputPath);
@@ -97,6 +83,7 @@ public class GeneratorTemplate {
         //拷贝jar包
         String originalJarPath = outputPath + File.separator + jarPath;
         String targetJarPath = distOutputPath + File.separator + "target";
+
         //创建target文件
         FileUtil.mkdir(targetJarPath);
         FileUtil.copy(originalJarPath, targetJarPath, false);
@@ -133,7 +120,7 @@ public class GeneratorTemplate {
 
         //输入路径
         // model.DataModel
-        inputFilePath = inputResourcePath + "templates/java/model/DataModel.java.ftl";
+        inputFilePath = inputResourcePath + File.separator + "templates/java/model/DataModel.java.ftl";
         outputFilePath = outputBaseJavaPackagePath + "/model/DataModel.java";
         DynamicFileGenerator.doGenerate(inputFilePath, outputFilePath, meta);
 
