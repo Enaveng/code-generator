@@ -82,7 +82,7 @@ public class CosManager {
     /**
      * 从对象存储上下载文件到本地
      * @param key 下载的文件
-     * @param localFilePath 本地文件路径
+     * @param localFilePath 下载到的本地文件路径
      * @return
      * @throws InterruptedException
      */

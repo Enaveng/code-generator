@@ -99,6 +99,7 @@ public class FileController {
             response.getOutputStream().flush();
         } catch (Exception e) {
             log.error("file download error, filepath = " + filepath, e);
+            log.error("file download error, filepath = " + filepath, e);
             log.error("file download error, filepath = ");
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "下载失败");
         } finally {
