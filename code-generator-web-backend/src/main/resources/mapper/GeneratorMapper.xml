@@ -32,4 +32,13 @@
         userId,createTime,updateTime,
         isDelete
     </sql>
+
+    <!--List<Generator> listDeleteGenerator()-->
+    <select id="listDeleteGenerator" resultType="com.enaveng.generatorweb.model.entity.Generator">
+        SELECT id, distPath
+        FROM code_generator_db
+        WHERE isDelete = 1
+    </select>
+
+
 </mapper>
