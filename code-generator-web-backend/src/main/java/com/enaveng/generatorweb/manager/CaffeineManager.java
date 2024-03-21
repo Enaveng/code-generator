@@ -17,7 +17,7 @@ public class CaffeineManager {
     @Resource
     private RedisTemplate redisTemplate;
 
-    Cache<String, String> localCache = Caffeine.newBuilder()
+    Cache<String, Object> localCache = Caffeine.newBuilder()
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .maximumSize(10_000)
             .build();
@@ -27,12 +27,12 @@ public class CaffeineManager {
      *
      * @param key
      */
-    public String get(String key) {
-        String localValue = localCache.getIfPresent(key);
+    public Object get(String key) {
+        Object localValue = localCache.getIfPresent(key);
         if (localValue != null) {
             return localValue;
         }
-        String value = (String) redisTemplate.opsForValue().get(key);
+        Object value = redisTemplate.opsForValue().get(key);
         //再写入到本地缓存当中
         if (value != null) {
             put(key, value);
@@ -46,10 +46,10 @@ public class CaffeineManager {
      * @param key
      * @param value
      */
-    public void put(String key, String value) {
+    public void put(String key, Object value) {
         localCache.put(key, value);
         //同时向redis当中添加缓存
-        redisTemplate.opsForValue().set(key, value);
+        redisTemplate.opsForValue().set(key, value, 100, TimeUnit.SECONDS);
     }
 
     /**

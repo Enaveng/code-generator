@@ -241,12 +241,12 @@ public class GeneratorController {
         //优先读取redis缓存数据
         //String generatorCacheValue = (String) redisTemplate.opsForValue().get(key);
         //改造为使用Caffeine本地缓存
-        String generatorCacheValue = caffeineManager.get(key);
+        Object generatorCacheValue = caffeineManager.get(key);
         if (generatorCacheValue != null) {
             //将json对象转换为实体类对象
-            Page<GeneratorVO> generatorVOPage = JSONUtil.toBean(generatorCacheValue, new TypeReference<Page<GeneratorVO>>() {
-            }, false);
-            return ResultUtils.success(generatorVOPage);
+//            Page<GeneratorVO> generatorVOPage = JSONUtil.toBean(generatorCacheValue, new TypeReference<Page<GeneratorVO>>() {
+//            }, false);
+            return ResultUtils.success((Page<GeneratorVO>) generatorCacheValue);
         }
         // 限制爬虫
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
@@ -258,7 +258,7 @@ public class GeneratorController {
         Page<GeneratorVO> generatorVOPage = generatorService.getGeneratorVOPage(generatorPage, request);
         //写缓存
         //redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(generatorVOPage), 120, TimeUnit.SECONDS);
-        caffeineManager.put(key, JSONUtil.toJsonStr(generatorVOPage));
+        caffeineManager.put(key, generatorVOPage);
         return ResultUtils.success(generatorVOPage);
     }
 
