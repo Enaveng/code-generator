@@ -13,6 +13,7 @@ import com.enaveng.generatorweb.common.*;
 import com.enaveng.generatorweb.constant.UserConstant;
 import com.enaveng.generatorweb.exception.BusinessException;
 import com.enaveng.generatorweb.exception.ThrowUtils;
+import com.enaveng.generatorweb.manager.CaffeineManager;
 import com.enaveng.generatorweb.manager.CosManager;
 import com.enaveng.generatorweb.model.dto.generator.*;
 import com.enaveng.generatorweb.model.entity.Generator;
@@ -29,7 +30,6 @@ import com.qcloud.cos.model.COSObjectInputStream;
 import com.qcloud.cos.utils.IOUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +68,9 @@ public class GeneratorController {
 
     @Resource
     private RedisTemplate redisTemplate;
+
+    @Resource
+    private CaffeineManager caffeineManager;
 
     /**
      * 创建代码生成器
@@ -234,9 +237,11 @@ public class GeneratorController {
                                                                HttpServletRequest request) {
         long current = generatorQueryRequest.getCurrent();
         long size = generatorQueryRequest.getPageSize();
-        //优先读取redis缓存数据
         String key = GeneratorUtils.getPageCacheKey(generatorQueryRequest);
-        String generatorCacheValue = (String) redisTemplate.opsForValue().get(key);
+        //优先读取redis缓存数据
+        //String generatorCacheValue = (String) redisTemplate.opsForValue().get(key);
+        //改造为使用Caffeine本地缓存
+        String generatorCacheValue = caffeineManager.get(key);
         if (generatorCacheValue != null) {
             //将json对象转换为实体类对象
             Page<GeneratorVO> generatorVOPage = JSONUtil.toBean(generatorCacheValue, new TypeReference<Page<GeneratorVO>>() {
@@ -252,7 +257,8 @@ public class GeneratorController {
         Page<Generator> generatorPage = generatorService.page(new Page<>(current, size), queryWrapper);
         Page<GeneratorVO> generatorVOPage = generatorService.getGeneratorVOPage(generatorPage, request);
         //写缓存
-        redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(generatorVOPage), 120, TimeUnit.SECONDS);
+        //redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(generatorVOPage), 120, TimeUnit.SECONDS);
+        caffeineManager.put(key, JSONUtil.toJsonStr(generatorVOPage));
         return ResultUtils.success(generatorVOPage);
     }
 
@@ -450,7 +456,6 @@ public class GeneratorController {
         processBuilder.directory(scriptDir); //设置待执行命令的工作目录
         try {
             Process process = processBuilder.start();
-
             // 读取命令的输出
             InputStream inputStream = process.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
