@@ -48,6 +48,7 @@ const GeneratorUsePage: React.FC = () => {
     setLoading(true);
     try {
       const res = await getGeneratorVoByIdUsingGet({
+        // @ts-ignore
         id,
       });
       setData(res.data || {});

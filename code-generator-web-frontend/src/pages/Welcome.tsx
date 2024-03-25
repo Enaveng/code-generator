@@ -1,161 +1,68 @@
+import { HeartTwoTone, SmileTwoTone } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
-import { Card, theme } from 'antd';
-import React from 'react';
+import { Alert, Card, Typography } from 'antd';
 
 /**
  * 每个单独的卡片，为了复用样式抽成了组件
- * @param param0
- * @returns
  */
-const InfoCard: React.FC<{
-  title: string;
-  index: number;
-  desc: string;
-  href: string;
-}> = ({ title, href, index, desc }) => {
-  const { useToken } = theme;
+const { Title, Paragraph } = Typography;
 
-  const { token } = useToken();
-
-  return (
-    <div
-      style={{
-        backgroundColor: token.colorBgContainer,
-        boxShadow: token.boxShadow,
-        borderRadius: '8px',
-        fontSize: '14px',
-        color: token.colorTextSecondary,
-        lineHeight: '22px',
-        padding: '16px 19px',
-        minWidth: '220px',
-        flex: 1,
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          gap: '4px',
-          alignItems: 'center',
-        }}
-      >
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            lineHeight: '22px',
-            backgroundSize: '100%',
-            textAlign: 'center',
-            padding: '8px 16px 16px 12px',
-            color: '#FFF',
-            fontWeight: 'bold',
-            backgroundImage:
-              "url('https://gw.alipayobjects.com/zos/bmw-prod/daaf8d50-8e6d-4251-905d-676a24ddfa12.svg')",
-          }}
-        >
-          {index}
-        </div>
-        <div
-          style={{
-            fontSize: '16px',
-            color: token.colorText,
-            paddingBottom: 8,
-          }}
-        >
-          {title}
-        </div>
-      </div>
-      <div
-        style={{
-          fontSize: '14px',
-          color: token.colorTextSecondary,
-          textAlign: 'justify',
-          lineHeight: '22px',
-          marginBottom: 8,
-        }}
-      >
-        {desc}
-      </div>
-      <a href={href} target="_blank" rel="noreferrer">
-        了解更多 {'>'}
-      </a>
-    </div>
-  );
-};
-
+const blockContent = `通过我们的在线代码生成器制作平台，您不管是专业的编程人员，还是普通的使用者，都可以轻松上手。快速生成属于自己的定制化代码，主打一个效率。`;
+const BIIntroduce = `我们引以为傲的亮点是 :
+   欢迎来到我们的在线代码生成器平台！我们致力于提供一个强大而便捷的工具，帮助开发人员提高效率、减少错误，并加速项目开发过程。
+   我们的代码生成器平台具有许多优点。首先，我们提供了丰富的代码模板和功能，让您能够快速生成常用的代码片段和样板代码。无论是创建表单、处理数据、实现算法，还是构建用户界面，我们都为您提供了一系列预定义的代码模板，节省您编写重复代码的时间。
+   无论您使用的是哪种编程语言或框架，我们都支持多种技术栈。我们的平台提供了对不同编程语言和框架的支持，使您能够生成适用于各种项目类型的代码。这为您提供了更大的灵活性和可定制性。`;
 const Welcome: React.FC = () => {
-  const { token } = theme.useToken();
-  const { initialState } = useModel('@@initialState');
   return (
     <PageContainer>
-      <Card
-        style={{
-          borderRadius: 8,
-        }}
-        bodyStyle={{
-          backgroundImage:
-            initialState?.settings?.navTheme === 'realDark'
-              ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'
-              : 'background-image: linear-gradient(75deg, #FBFDFF 0%, #F5F7FF 100%)',
-        }}
-      >
-        <div
+      <Card>
+        <Alert
+          message={'欢迎使用Enaveng的代码生成器平台！'}
+          type="success"
+          showIcon
+          banner
           style={{
-            backgroundPosition: '100% -30%',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: '274px auto',
-            backgroundImage:
-              "url('https://gw.alipayobjects.com/mdn/rms_a9745b/afts/img/A*BuFmQqsB2iAAAAAAAAAAAAAAARQnAQ')",
+            margin: -12,
+            marginBottom: 48,
+          }}
+        />
+        <Typography.Title
+          level={1}
+          style={{
+            textAlign: 'center',
           }}
         >
-          <div
-            style={{
-              fontSize: '20px',
-              color: token.colorTextHeading,
-            }}
-          >
-            欢迎使用 Ant Design Pro
-          </div>
-          <p
-            style={{
-              fontSize: '14px',
-              color: token.colorTextSecondary,
-              lineHeight: '22px',
-              marginTop: 16,
-              marginBottom: 32,
-              width: '65%',
-            }}
-          >
-            Ant Design Pro 是一个整合了 umi，Ant Design 和 ProComponents
-            的脚手架方案。致力于在设计规范和基础组件的基础上，继续向上构建，提炼出典型模板/业务组件/配套设计资源，进一步提升企业级中后台产品设计研发过程中的『用户』和『设计者』的体验。
-          </p>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 16,
-            }}
-          >
-            <InfoCard
-              index={1}
-              href="https://umijs.org/docs/introduce/introduce"
-              title="了解 umi"
-              desc="umi 是一个可扩展的企业级前端应用框架,umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。"
-            />
-            <InfoCard
-              index={2}
-              title="了解 ant design"
-              href="https://ant.design"
-              desc="antd 是基于 Ant Design 设计体系的 React UI 组件库，主要用于研发企业级中后台产品。"
-            />
-            <InfoCard
-              index={3}
-              title="了解 Pro Components"
-              href="https://procomponents.ant.design"
-              desc="ProComponents 是一个基于 Ant Design 做了更高抽象的模板组件，以 一个组件就是一个页面为开发理念，为中后台开发带来更好的体验。"
-            />
-          </div>
-        </div>
+          <SmileTwoTone style={{ color: '#0015ff' }} /> 在线 Code 生成器平台{' '}
+          <HeartTwoTone twoToneColor="#eb2f96" />
+        </Typography.Title>
+        <Paragraph>
+          我们的在线代码生成器平台是简化开发，大幅度提高效率的平台。
+        </Paragraph>
+        <Paragraph style={{ fontWeight: 'bold' }}>
+          <pre>{blockContent}</pre>
+        </Paragraph>
+        <Title level={2}>在线代码生成器 介绍</Title>
+        <Paragraph style={{ fontWeight: 'bold' }}>
+          <pre>{BIIntroduce}</pre>
+        </Paragraph>
+        <Title level={2}>在线代码生成器 特点</Title>
+        <Paragraph strong>
+          1.
+          帮助开发人员快速生成代码片段、模板或样板代码，节省了手动编写重复代码的时间和精力。它们提供了预定义的代码模板和常用功能的自动生成，使开发任务更高效。
+        </Paragraph>
+        <Paragraph strong>
+          2.
+          可以在各种操作系统和设备上运行，无需安装额外的软件或工具。它们提供直观的用户界面和易于使用的操作，使得即使对编程不太熟悉的人也能方便地生成所需的代码。
+        </Paragraph>
+        <Paragraph strong>
+          3.
+          使开发人员可以根据需要生成适用于各种技术栈和项目类型的代码。这提供了更大的灵活性和可定制性。
+        </Paragraph>
+        <Paragraph strong>
+          4.
+          通过使用在线代码生成器，开发人员可以避免手动编写代码时可能引入的错误和拼写错误。生成的代码经过验证，并且是经过测试和调试的，因此减少了出错的可能性，加快了调试过程。
+        </Paragraph>
+        <br />
       </Card>
     </PageContainer>
   );

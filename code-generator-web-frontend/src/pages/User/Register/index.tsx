@@ -57,7 +57,7 @@ const UserRegisterPage: React.FC = () => {
             minWidth: 280,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" style={{ height: '100%' }} src="/logo.png" />}
+          logo={<img alt="logo" style={{ height: '100%'}} src="/logo.png" />}
           title="在线 Code 代码生成平台"
           subTitle={'代码生成器在线制作分享，专属订制一触即发'}
           initialValues={{
