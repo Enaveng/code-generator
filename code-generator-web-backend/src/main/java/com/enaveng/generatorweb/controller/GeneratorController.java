@@ -385,7 +385,7 @@ public class GeneratorController {
     }
 
     /**
-     * 在线使用生成器接口
+     * 在线使用生成器接口  通过生成器生成对应的文件
      *
      * @param generatorRequest 请求参数
      * @param request
@@ -487,7 +487,7 @@ public class GeneratorController {
 
 
     /**
-     * 在线制作生成器接口 根据用户上传的模板文件制作生成器
+     * 在线制作生成器接口 根据用户上传的模板文件制作生成器 调用的是Maker项目
      *
      * @param generatorMakeRequest
      * @param request
@@ -559,7 +559,7 @@ public class GeneratorController {
 
 
     /**
-     * 优化下载流程 将生成器缓存到本地当中
+     * 优化下载流程 将生成器缓存到本地当中 仅仅测试没有正式在前端使用该接口
      *
      * @param generatorCacheRequest
      * @param request

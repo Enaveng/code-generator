@@ -8,8 +8,8 @@ public class JarGenerator {
     public static void doGenerate(String filePath) throws InterruptedException, IOException {
         //构建打包命令 先清除再进行打包并且跳过测试 不同操作系统下的打包命令不同
         String winPackageCommand = "mvn.cmd clean package -DskipTests=true";
-        String otherPackageCommand = "mvn clean package -DskipTests=true";
-        String mavenCommand = winPackageCommand;
+        String otherPackageCommand = "mvn clean package -DskipTests=true";   //当部署到服务器上时使用 otherPackageCommand 对应的命令
+        String mavenCommand = otherPackageCommand;
         //调用process类实现maven打包
         ProcessBuilder processBuilder = new ProcessBuilder(mavenCommand.split(" "));
         processBuilder.directory(new File(filePath));
